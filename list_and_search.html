@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<style>
+.responsive-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+.frame-container{
+    position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+
+}
+.list{
+    cursor: pointer;
+    border: 2px solid black;
+    margin: 5px;
+}
+</style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-4">
+            <div id="searchbar">
+                <input type="text" name="" id="search">
+                <button>search</button>
+            </div>
+            <div id="result">
+        
+            </div>
+          </div>
+          <div class="col-sm-8">
+              <div class="frame-container">
+            <iframe src="" class="responsive-iframe" id="api-frame" allow="autoplay; fullscreen; vr" allowvr allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+ 
+   
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $("button").click(function(){
+            var searchData=$("#search").val()
+            console.log(searchData)
+            $('#result').empty()
+        $.get("https://api.sketchfab.com/v3/search?q="+searchData, function(data, status){
+            console.log(data.results.models[0].name)
+           
+            for(var i in data.results.models)
+            
+            $("#result").append("<div class='list' id="+i+">"+data.results.models[i].name+"<div>")
+            
+      
+        $("#result").on('click','.list',function(){
+            console.log(this.id)
+            $("#api-frame").attr('src',data.results.models[this.id].embedUrl)
+        })
+    });
+});
+    </script>
+</body>
+</html>
